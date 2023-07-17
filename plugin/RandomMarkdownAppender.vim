@@ -1,6 +1,5 @@
 set nocompatible
 
-let g:names=["Foxtrott", "Uniform", "Charlie", "Kilo"]
 let g:random_dot_org_create_mapping_script=<< END
 #!/bin/bash
 line_count=$(cat /tmp/names | wc -l)
@@ -28,30 +27,29 @@ END
 
 function RandomMarkdownAppender#randomizeRandomDotOrg()
     let API_KEY=system('echo $RANDOM_DOT_ORG_API_KEY')
-    echo $API_KEY
     if !API_KEY
         echo 'you have to set the API Key form random.org as environment variable'
         echo 'export RANDOM_DOT_ORG_API_KEY=***************************'
         return
     endif
     call system('rm /tmp/names')
-    for name in g:names
+    for name in g:RandomMarkdownAppender#names
         call system('echo ' . name . ' >> /tmp/names')
     endfor
     call system(join(g:random_dot_org_create_mapping_script, "\n"))
     let cnt=0
-    let names_cnt=len(g:names)
+    let names_cnt=len(g:RandomMarkdownAppender#names)
     g/^# /let cnt=cnt+1
     for i in range(0, cnt-1)
         let random_mapping_index= i % names_cnt + 1
         let name_index=system('sed "' . random_mapping_index . 'q;d" /tmp/random_mapping')
         /^# 
-        exe "normal A (" . g:names[name_index - 1] . ")"
+        exe "normal A (" . g:RandomMarkdownAppender#names[name_index - 1] . ")"
     endfor
 endfunction
 
 function RandomMarkdownAppender#randomizeSimple()
-    let names_concantinated = join(g:names, ' ')
+    let names_concantinated = join(g:RandomMarkdownAppender#names, ' ')
     let random_ordered_names = system('shuf -e ' . names_concantinated)
     let random_ordered_names_list = split(random_ordered_names, "\n")
     let cnt=0

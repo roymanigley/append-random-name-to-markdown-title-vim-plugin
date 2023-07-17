@@ -78,7 +78,7 @@ call plug#end()
 > add this to your `.vimrc` file to define the names  
 
 
-    let g:names=["Alpha", "Beta", "Gamma", "Delta"]
+    let g:RandomMarkdownAppender#names=["Alpha", "Beta", "Gamma", "Delta"]
 
 > add this to your `.vimrc` file to use it as a shortcut  
 
